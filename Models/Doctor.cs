@@ -7,8 +7,9 @@ namespace BackEnd.Models
 {
     public class Doctor : User
     {
+
         public string Dob { get; set; }
-        public string Qualification { get; set; }
+        public int Title { get; set; }
         public string Experience { get; set; }
     }
 }

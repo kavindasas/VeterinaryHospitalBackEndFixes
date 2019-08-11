@@ -29,7 +29,7 @@ namespace BackEnd.Service
                     cmd.Parameters.AddWithValue("@Email", owner.Email);
                     cmd.Parameters.AddWithValue("@ContactNo", owner.ContactNo);
                     cmd.Parameters.AddWithValue("@Address", owner.Address);
-                    cmd.Parameters.AddWithValue("@Qualification", owner.Qualification);
+                    cmd.Parameters.AddWithValue("@Title", owner.Title);
                     cmd.Parameters.AddWithValue("@Experience", owner.Experience);
                     cmd.Parameters.AddWithValue("@Dob", owner.Dob);
                     cmd.Parameters.AddWithValue("@PassWord", owner.PassWord);
@@ -76,11 +76,12 @@ namespace BackEnd.Service
                         doctor.FirstName = rdr["FirstName"].ToString();
                         doctor.LastName = rdr["LastName"].ToString();
                         doctor.Sex = Convert.ToInt32(rdr["Sex"]);
+                        doctor.Title = Convert.ToInt32(rdr["Title"]);
                         doctor.Email = rdr["Email"].ToString();
                         doctor.ContactNo = rdr["ContactNo"].ToString();
                         doctor.Address = rdr["Address"].ToString();
                         doctor.Dob = rdr["Dob"].ToString();
-                        doctor.Qualification = rdr["Qualification"].ToString();
+                        //doctor.Qualification = rdr["Qualification"].ToString();
                         doctor.Experience = rdr["Experience"].ToString();
                     }
                     con.Close();
@@ -131,38 +132,30 @@ namespace BackEnd.Service
             }
         }
 
-        public Cookie UpdateInfo(UpdateDogInfo updateDoctorInfo)
+        public bool UpdateInfo(UpdateDoctor updateDoctor)
         {
-            Cookie cookie = new Cookie();
-            try
+            bool result = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
             {
+                SqlCommand cmd = new SqlCommand("Update_DogInfo", con);
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                using (SqlConnection con = new SqlConnection(connectionString))
-
+                cmd.Parameters.AddWithValue("@UserId", updateDoctor.UserId);
+                cmd.Parameters.AddWithValue("@DogName", updateDoctor.DogName);
+                cmd.Parameters.AddWithValue("@Vacination", updateDoctor.Vacination);
+                cmd.Parameters.AddWithValue("@HRecord", updateDoctor.HRecord);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
                 {
-                    SqlCommand cmd = new SqlCommand("Update_DogInfo", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@UserId", updateDoctorInfo.UserId);
-                    cmd.Parameters.AddWithValue("@DogName", updateDoctorInfo.DogName);
-                    cmd.Parameters.AddWithValue("@Vacination", updateDoctorInfo.Vacination);
-                    cmd.Parameters.AddWithValue("@HRecord", updateDoctorInfo.HRecord);
-                    con.Open();
-                    //cmd.ExecuteNonQuery();
-                    SqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
-                        cookie.isSuccess = Convert.ToBoolean(rdr["Status"]);
-                    }
-                    con.Close();
+                    result = Convert.ToBoolean(rdr["Status"]);
                 }
-                return cookie;
+                con.Close();
             }
-            catch (Exception x)
-            {
-                cookie.isSuccess = false;
-                return cookie;
-            }
+            return result;
         }
     }
 }

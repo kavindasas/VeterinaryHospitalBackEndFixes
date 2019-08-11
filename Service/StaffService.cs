@@ -24,6 +24,7 @@ namespace BackEnd.Service
                     cmd.Parameters.AddWithValue("@UserType", 2);
                     cmd.Parameters.AddWithValue("@FirstName", owner.FirstName);
                     cmd.Parameters.AddWithValue("@LastName", owner.LastName);
+                    cmd.Parameters.AddWithValue("@Sex", owner.Sex);
                     cmd.Parameters.AddWithValue("@Email", owner.Email);
                     cmd.Parameters.AddWithValue("@ContactNo", owner.ContactNo);
                     cmd.Parameters.AddWithValue("@Address", owner.Address);

@@ -40,13 +40,13 @@ namespace BackEnd.Controllers
         // POST api/values
         [Route("reg")]
         [HttpPost]
-        public ResponseResult<Cookie> Reg([FromBody] Owner owner)
+        public ResponseResult<Cookie> Reg([FromBody] Doctor doctor)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
-                OwnerService ownerService = new OwnerService();
-                result.Result = ownerService.AddOwner(owner);
+                DoctorService doctorService = new DoctorService();
+                result.Result = doctorService.AddDoctor(doctor);
 
             }
             catch (Exception e)
@@ -60,13 +60,13 @@ namespace BackEnd.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ResponseResult<Cookie> Login([FromBody] Login owner)
+        public ResponseResult<Cookie> Login([FromBody] Login doctor)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
-                OwnerService ownerService = new OwnerService();
-                result.Result = ownerService.Login(owner);
+                DoctorService doctorService = new DoctorService();
+                result.Result = doctorService.Login(doctor);
                 if (result.Result.UserId == 0)
                 {
                     result.Message = "Incorrect RegNo Or Password";
@@ -82,15 +82,15 @@ namespace BackEnd.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public ResponseResult<Cookie> Put([FromBody] UpdateDogInfo updateDogInfo)
+        public ResponseResult<Cookie> Put([FromBody] UpdateDoctor updateDoctorInfo)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
-            OwnerService ownerService = new OwnerService();
+            DoctorService doctorService = new DoctorService();
 
             try
             {
                 result.Result = null;
-                result.IsSuccess = ownerService.UpdateInfo(updateDogInfo);
+                result.IsSuccess = doctorService.UpdateInfo(updateDoctorInfo);
             }
             catch (Exception e)
             {

@@ -40,13 +40,13 @@ namespace BackEnd.Controllers
         // POST api/values
         [Route("reg")]
         [HttpPost]
-        public ResponseResult<Cookie> Reg([FromBody] Owner owner)
+        public ResponseResult<Cookie> Reg([FromBody] Staff staff)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
-                OwnerService ownerService = new OwnerService();
-                result.Result = ownerService.AddOwner(owner);
+                StaffService staffService = new StaffService();
+                result.Result = staffService.AddStaff(staff);
 
             }
             catch (Exception e)
