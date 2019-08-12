@@ -10,9 +10,10 @@ GO
 
 CREATE TABLE [dbo].[Message](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Heading] [varchar](255) NOT NULL,
-	[Details] [varchar](255) NOT NULL,
-	[User] [int] NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[Subject] [varchar](100) NOT NULL,
+	[Message] [varchar](400) NOT NULL,
 	CreatedDate	[DATETIME] default CURRENT_TIMESTAMP
 )
 

@@ -150,5 +150,48 @@ namespace BackEnd.Service
                 }
                 return result;
         }
+
+        public List<Owner> Search(string Id)
+        {
+            try
+            {
+                List<Owner> ownerList = new List<Owner>();
+                Owner owner = new Owner();
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("Select_DogOwner", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@Para", Id);
+                    con.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        owner.Id = Convert.ToInt32(rdr["Id"]);
+                        owner.FirstName = rdr["FirstName"].ToString();
+                        owner.LastName = rdr["LastName"].ToString();
+                        owner.Sex = Convert.ToInt32(rdr["Sex"]);
+                        owner.Email = rdr["Email"].ToString();
+                        owner.ContactNo = rdr["ContactNo"].ToString();
+                        owner.Address = rdr["Address"].ToString();
+                        owner.DogName = rdr["DogName"].ToString();
+                        owner.DogType = rdr["DogType"].ToString();
+                        owner.DogAge = Convert.ToInt32(rdr["DogAge"]);
+                        owner.DogDob = rdr["DogDob"].ToString();
+                        owner.Vacination = rdr["Vacination"].ToString();
+                        owner.HRecord = rdr["HRecord"].ToString();
+                        ownerList.Add(owner);
+                    }
+                    con.Close();
+                }
+                return ownerList;
+            }
+            catch (Exception x)
+            {
+                return null;
+            }
+        }
+
     }
 }
