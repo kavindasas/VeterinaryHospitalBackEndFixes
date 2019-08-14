@@ -18,7 +18,7 @@ namespace BackEnd.Service
             using (SqlConnection con = new SqlConnection(connectionString))
 
             {
-                SqlCommand cmd = new SqlCommand("Get_Login", con);
+                SqlCommand cmd = new SqlCommand("Insert_Message", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@Name", message.Name);
@@ -68,7 +68,7 @@ namespace BackEnd.Service
             using (SqlConnection con = new SqlConnection(connectionString))
 
             {
-                SqlCommand cmd = new SqlCommand("Get_Login", con);
+                SqlCommand cmd = new SqlCommand("Get_Messages", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 //cmd.ExecuteNonQuery();
