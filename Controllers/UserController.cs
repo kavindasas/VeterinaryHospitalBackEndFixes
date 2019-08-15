@@ -50,6 +50,24 @@ namespace BackEnd.Controllers
             return result;
         }
 
+        [Route("getUsers")]
+        [HttpGet]
+        public ResponseResult<List<User>> GetUsers()
+        {
+            ResponseResult<List<User>> result = new ResponseResult<List<User>>();
+            try
+            {
+                UserService userService = new UserService();
+                result.Result = userService.GetUsers();
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
 
         [Route("adminLogin")]
         [HttpPost]

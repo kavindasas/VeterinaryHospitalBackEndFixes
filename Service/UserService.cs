@@ -63,7 +63,6 @@ namespace BackEnd.Service
         public List<MessageVM> GetMessages()
         {
             List<MessageVM> messages = new List<MessageVM>();
-            MessageVM message = new MessageVM();
 
             using (SqlConnection con = new SqlConnection(connectionString))
 
@@ -75,6 +74,7 @@ namespace BackEnd.Service
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
+                    MessageVM message = new MessageVM();
                     message.Email = rdr["Email"].ToString();
                     message.Name = rdr["Name"].ToString();
                     message.Subject = rdr["Subject"].ToString();
@@ -84,6 +84,34 @@ namespace BackEnd.Service
                 con.Close();
             }
             return messages;
+        }
+
+        public List<User> GetUsers()
+        {
+            List<User> users = new List<User>();    
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Get_Users", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    User user = new User();
+                    user.Id = Convert.ToInt32(rdr["Id"].ToString());
+                    user.FirstName = rdr["FirstName"].ToString();
+                    user.LastName = rdr["LastName"].ToString();
+                    user.Email = rdr["Email"].ToString();
+                    user.RegNo = rdr["RegNo"].ToString();
+                    user.UserType = Convert.ToInt32(rdr["UserType"].ToString());
+                    users.Add(user);
+                }
+                con.Close();
+            }
+            return users;
         }
     }
 }
