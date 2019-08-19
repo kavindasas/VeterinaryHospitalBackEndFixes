@@ -68,6 +68,24 @@ namespace BackEnd.Controllers
             return result;
         }
 
+        [Route("searchUsers")]
+        [HttpGet]
+        public ResponseResult<List<User>> searchUsers([FromQuery]string Para)
+        {
+            ResponseResult<List<User>> result = new ResponseResult<List<User>>();
+            try
+            {
+                UserService userService = new UserService();
+                result.Result = userService.SearchUsers(Para);
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
 
         [Route("adminLogin")]
         [HttpPost]

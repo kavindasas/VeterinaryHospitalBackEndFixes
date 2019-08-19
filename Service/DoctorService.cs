@@ -157,5 +157,30 @@ namespace BackEnd.Service
             }
             return result;
         }
+
+        public bool UpdatePassword(ChangePassword password)
+        {
+            bool result = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Update_Password", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UserId", password.Id);
+                cmd.Parameters.AddWithValue("@OldPass", password.OldPass);
+                cmd.Parameters.AddWithValue("@NewPass", password.NewPass);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    result = Convert.ToBoolean(rdr["Status"]);
+                }
+                con.Close();
+            }
+            return result;
+        }
     }
 }

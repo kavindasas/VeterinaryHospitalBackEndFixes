@@ -17,6 +17,7 @@ namespace BackEnd.Models
         public string RegNo { get; set; }
         public string PassWord { get; set; }
         public int UserType { get; set; }
+        public string Type { get; set; }
 
 
     }

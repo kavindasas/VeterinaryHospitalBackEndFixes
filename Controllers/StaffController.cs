@@ -99,5 +99,25 @@ namespace BackEnd.Controllers
             }
             return result;
         }
+
+        [Route("ChangePassword")]
+        [HttpPut]
+        public ResponseResult<Cookie> ChangePassword([FromBody] ChangePassword updateDogInfo)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            OwnerService ownerService = new OwnerService();
+
+            try
+            {
+                result.Result = null;
+                result.IsSuccess = ownerService.UpdatePassword(updateDogInfo);
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
     }
 }
