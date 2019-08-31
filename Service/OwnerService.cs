@@ -217,5 +217,38 @@ namespace BackEnd.Service
             }
             return result;
         }
+
+        public List<Owner> SearchUsers(string Para)
+        {
+            List<Owner> users = new List<Owner>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Search_Owner", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Para", Para);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Owner user = new Owner();
+                    user.Id = Convert.ToInt32(rdr["Id"].ToString());
+                    user.FirstName = rdr["FirstName"].ToString();
+                    user.LastName = rdr["LastName"].ToString();
+                    user.Email = rdr["Email"].ToString();
+                    user.RegNo = rdr["RegNo"].ToString();
+                    //user.UserType = Convert.ToInt32(rdr["UserType"].ToString());
+                    //user.Type = rdr["Type"].ToString();
+                    user.HRecord = rdr["HRecord"].ToString();
+                    user.Vacination = rdr["Vacination"].ToString();
+                    user.DogName = rdr["DogName"].ToString();
+                    users.Add(user);
+                }
+                con.Close();
+            }
+            return users;
+        }
     }
 }

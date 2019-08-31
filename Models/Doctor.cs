@@ -11,5 +11,6 @@ namespace BackEnd.Models
         public string Dob { get; set; }
         public int Title { get; set; }
         public string Experience { get; set; }
+        public string Qualification { get; set; }
     }
 }

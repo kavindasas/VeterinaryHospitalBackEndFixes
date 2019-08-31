@@ -140,5 +140,23 @@ namespace BackEnd.Controllers
             }
             return result;
         }
+
+        [Route("searchUsers")]
+        [HttpGet]
+        public ResponseResult<List<Owner>> searchUsers([FromQuery]string Para)
+        {
+            ResponseResult<List<Owner>> result = new ResponseResult<List<Owner>>();
+            try
+            {
+                OwnerService ownerService = new OwnerService();
+                result.Result = ownerService.SearchUsers(Para);
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
     }
 }

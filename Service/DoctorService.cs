@@ -76,12 +76,12 @@ namespace BackEnd.Service
                         doctor.FirstName = rdr["FirstName"].ToString();
                         doctor.LastName = rdr["LastName"].ToString();
                         doctor.Sex = Convert.ToInt32(rdr["Sex"]);
-                        doctor.Title = Convert.ToInt32(rdr["Title"]);
+                        //doctor.Title = Convert.ToInt32(rdr["Title"]);
                         doctor.Email = rdr["Email"].ToString();
                         doctor.ContactNo = rdr["ContactNo"].ToString();
                         doctor.Address = rdr["Address"].ToString();
                         doctor.Dob = rdr["Dob"].ToString();
-                        //doctor.Qualification = rdr["Qualification"].ToString();
+                        doctor.Qualification = rdr["Qualification"].ToString();
                         doctor.Experience = rdr["Experience"].ToString();
                     }
                     con.Close();
@@ -107,7 +107,7 @@ namespace BackEnd.Service
                     SqlCommand cmd = new SqlCommand("Get_Login", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@UserType", 3);
+                    cmd.Parameters.AddWithValue("@UserType", 1);
                     cmd.Parameters.AddWithValue("@RegNo", login.RegNo.ToUpper());
                     cmd.Parameters.AddWithValue("@PassWord", login.PassWord);
                     con.Open();

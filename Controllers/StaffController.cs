@@ -19,13 +19,13 @@ namespace BackEnd.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ResponseResult<Owner> Get(int id)
+        public ResponseResult<Staff> Get(int id)
         {
-            ResponseResult<Owner> result = new ResponseResult<Owner>();
+            ResponseResult<Staff> result = new ResponseResult<Staff>();
             try
             {
-                OwnerService ownerService = new OwnerService();
-                result.Result = ownerService.GetOwner(id);
+                StaffService staffService = new StaffService();
+                result.Result = staffService.GetStaff(id);
 
             }
             catch (Exception e)

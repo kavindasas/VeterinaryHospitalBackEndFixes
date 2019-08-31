@@ -48,14 +48,14 @@ namespace BackEnd.Service
         }
 
 
-        public Owner GetStaff(int Id)
+        public Staff GetStaff(int Id)
         {
             try
             {
-                Owner owner = new Owner();
+                Staff owner = new Staff();
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmd = new SqlCommand("Select_DogOwner", con);
+                    SqlCommand cmd = new SqlCommand("Select_Staff", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@UserId", Id);
@@ -71,12 +71,8 @@ namespace BackEnd.Service
                         owner.Email = rdr["Email"].ToString();
                         owner.ContactNo = rdr["ContactNo"].ToString();
                         owner.Address = rdr["Address"].ToString();
-                        owner.DogName = rdr["DogName"].ToString();
-                        owner.DogType = rdr["DogType"].ToString();
-                        owner.DogAge = Convert.ToInt32(rdr["DogAge"]);
-                        owner.DogDob = rdr["DogDob"].ToString();
-                        owner.Vacination = rdr["Vacination"].ToString();
-                        owner.HRecord = rdr["HRecord"].ToString();
+                        owner.Qualification = rdr["Qualification"].ToString();
+                        owner.Experience = rdr["Experience"].ToString();
                     }
                     con.Close();
                 }
@@ -99,7 +95,7 @@ namespace BackEnd.Service
                     SqlCommand cmd = new SqlCommand("Get_Login", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@UserType", 3);
+                    cmd.Parameters.AddWithValue("@UserType", 2);
                     cmd.Parameters.AddWithValue("@RegNo", login.RegNo.ToUpper());
                     cmd.Parameters.AddWithValue("@PassWord", login.PassWord);
                     con.Open();
