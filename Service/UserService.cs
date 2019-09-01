@@ -206,6 +206,8 @@ namespace BackEnd.Service
                     dnt.Title = rdr["Title"].ToString();
                     dnt.Url = rdr["Url"].ToString();
                     dnt.Description = rdr["Description"].ToString();
+                    dnt.Type = Convert.ToInt32(rdr["Type"].ToString());
+                    dnt.TypeDesc = rdr["TypeDesc"].ToString();
                     dnts.Add(dnt);
                 }
                 con.Close();
