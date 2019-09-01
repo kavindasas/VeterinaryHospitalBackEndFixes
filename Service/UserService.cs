@@ -1,4 +1,5 @@
 ﻿using BackEnd.Models;
+using BackEnd.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -42,7 +43,7 @@ namespace BackEnd.Service
                 SqlCommand cmd = new SqlCommand("Get_Login", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@UserType", 3);
+                cmd.Parameters.AddWithValue("@UserType", 4);
                 cmd.Parameters.AddWithValue("@RegNo", login.RegNo.ToUpper());
                 cmd.Parameters.AddWithValue("@PassWord", login.PassWord);
                 con.Open();
@@ -143,6 +144,232 @@ namespace BackEnd.Service
                 con.Close();
             }
             return users;
+        }
+
+        public bool UpdatePassword(ChangePassword password)
+        {
+            bool result = false;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Update_PassAdmin", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UserId", password.Id);
+                cmd.Parameters.AddWithValue("@NewPass", password.NewPass);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                result = true;
+                con.Close();
+            }
+            return result;
+        }
+
+        public bool AddDnt(Dnt dnt)
+        {
+            bool cookie = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Insert_Dnt", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Url", dnt.Url);
+                cmd.Parameters.AddWithValue("@Title", dnt.Title);
+                cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return cookie;
+        }
+
+        public List<Dnt> GetDnts()
+        {
+            List<Dnt> dnts = new List<Dnt>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Get_Dnts", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Dnt dnt = new Dnt();
+                    dnt.Id = Convert.ToInt32(rdr["Id"].ToString());
+                    dnt.Title = rdr["Title"].ToString();
+                    dnt.Url = rdr["Url"].ToString();
+                    dnt.Description = rdr["Description"].ToString();
+                    dnts.Add(dnt);
+                }
+                con.Close();
+            }
+            return dnts;
+        }
+
+        public List<User> EditDnt(Dnt dnt)
+        {
+            List<User> users = new List<User>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Update_Dnt", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", dnt.Id);
+                cmd.Parameters.AddWithValue("@Url", dnt.Url);
+                cmd.Parameters.AddWithValue("@Title", dnt.Title);
+                cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                //while (rdr.Read())
+                //{
+                //    User user = new User();
+                //    user.Id = Convert.ToInt32(rdr["Id"].ToString());
+                //    user.FirstName = rdr["FirstName"].ToString();
+                //    user.LastName = rdr["LastName"].ToString();
+                //    user.Email = rdr["Email"].ToString();
+                //    user.RegNo = rdr["RegNo"].ToString();
+                //    user.UserType = Convert.ToInt32(rdr["UserType"].ToString());
+                //    user.Type = rdr["Type"].ToString();
+                //    users.Add(user);
+                //}
+                con.Close();
+            }
+            return users;
+        }
+
+        public bool DeleteDnt(int Id)
+        {
+            bool cookie = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Delete_Dnt", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Id", Id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return cookie;
+        }
+
+        public bool AddDntType(DntType dnt)
+        {
+            bool cookie = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Insert_DntType", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return cookie;
+        }
+
+        public List<DntType> GetDntTypes()
+        {
+            List<DntType> dnts = new List<DntType>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Get_DntTypes", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    DntType dnt = new DntType();
+                    dnt.Id = Convert.ToInt32(rdr["Id"].ToString());
+                    dnt.Description = rdr["Description"].ToString();
+                    dnts.Add(dnt);
+                }
+                con.Close();
+            }
+            return dnts;
+        }
+
+        public List<User> EditDntType(DntType dnt)
+        {
+            List<User> users = new List<User>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Update_DntType", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", dnt.Id);
+                cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                con.Open();
+                //cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                //while (rdr.Read())
+                //{
+                //    User user = new User();
+                //    user.Id = Convert.ToInt32(rdr["Id"].ToString());
+                //    user.FirstName = rdr["FirstName"].ToString();
+                //    user.LastName = rdr["LastName"].ToString();
+                //    user.Email = rdr["Email"].ToString();
+                //    user.RegNo = rdr["RegNo"].ToString();
+                //    user.UserType = Convert.ToInt32(rdr["UserType"].ToString());
+                //    user.Type = rdr["Type"].ToString();
+                //    users.Add(user);
+                //}
+                con.Close();
+            }
+            return users;
+        }
+
+        public bool DeleteDntTyp(int Id)
+        {
+            bool cookie = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Delete_DntType", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Id", Id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return cookie;
+        }
+
+        public bool DeleteUser(int Id)
+        {
+            bool cookie = true;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                SqlCommand cmd = new SqlCommand("Delete_User", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Id", Id);
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            return cookie;
         }
     }
 }

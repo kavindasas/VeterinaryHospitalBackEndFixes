@@ -139,13 +139,12 @@ namespace BackEnd.Service
             using (SqlConnection con = new SqlConnection(connectionString))
 
             {
-                SqlCommand cmd = new SqlCommand("Update_DogInfo", con);
+                SqlCommand cmd = new SqlCommand("Update_DoctorInfo", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@UserId", updateDoctor.UserId);
-                cmd.Parameters.AddWithValue("@DogName", updateDoctor.DogName);
-                cmd.Parameters.AddWithValue("@Vacination", updateDoctor.Vacination);
-                cmd.Parameters.AddWithValue("@HRecord", updateDoctor.HRecord);
+                cmd.Parameters.AddWithValue("@Experience", updateDoctor.Experience);
+                cmd.Parameters.AddWithValue("@Qualification", updateDoctor.Qualification);
                 con.Open();
                 //cmd.ExecuteNonQuery();
                 SqlDataReader rdr = cmd.ExecuteReader();
@@ -174,10 +173,7 @@ namespace BackEnd.Service
                 con.Open();
                 //cmd.ExecuteNonQuery();
                 SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
-                {
-                    result = Convert.ToBoolean(rdr["Status"]);
-                }
+                result = true;
                 con.Close();
             }
             return result;

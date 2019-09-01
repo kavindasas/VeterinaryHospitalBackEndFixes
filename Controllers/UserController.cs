@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackEnd.Models;
+using BackEnd.Models.Dto;
 using BackEnd.Models.Response;
 using BackEnd.Service;
 using Microsoft.AspNetCore.Http;
@@ -89,12 +90,13 @@ namespace BackEnd.Controllers
 
         [Route("adminLogin")]
         [HttpPost]
-        public ResponseResult<Cookie> AdminLogin()
+        public ResponseResult<Cookie> AdminLogin([FromBody] Login user)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
                 UserService userService = new UserService();
+                result.Result = userService.Login(user);
 
             }
             catch (Exception e)
@@ -106,13 +108,186 @@ namespace BackEnd.Controllers
         }
 
         [Route("changePassword")]
+        [HttpPut]
+        public ResponseResult<Cookie> ChangePassword([FromBody] ChangePassword updateDoctorInfo)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            UserService uService = new UserService();
+            try
+            {
+                result.Result = null;
+                result.IsSuccess = uService.UpdatePassword(updateDoctorInfo);
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("dnt")]
+        [HttpGet]
+        public ResponseResult<List<Dnt>> dnt()
+        {
+            ResponseResult<List<Dnt>> result = new ResponseResult<List<Dnt>>();
+            UserService uService = new UserService();
+            try
+            {
+                result.IsSuccess = true;
+                result.Result = uService.GetDnts();
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("addDnt")]
         [HttpPost]
-        public ResponseResult<Cookie> ChangePassword()
+        public ResponseResult<Cookie> addDnt([FromBody] Dnt dnt)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
+                UserService userService = new UserService();
+                userService.AddDnt(dnt);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
 
+        [Route("editDnt")]
+        [HttpPost]
+        public ResponseResult<Cookie> editDnt([FromBody] Dnt dnt)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.EditDnt(dnt);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("dntTypes")]
+        [HttpGet]
+        public ResponseResult<List<DntType>> dntTypes()
+        {
+            ResponseResult<List<DntType>> result = new ResponseResult<List<DntType>>();
+            UserService uService = new UserService();
+            try
+            {
+                result.IsSuccess = true;
+                result.Result = uService.GetDntTypes();
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("addDntType")]
+        [HttpPost]
+        public ResponseResult<Cookie> addDntType([FromBody] DntType dnt)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.AddDntType(dnt);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("editDntType")]
+        [HttpPost]
+        public ResponseResult<Cookie> editDntType([FromBody] Dnt dnt)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.EditDnt(dnt);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("deleteDntType")]
+        [HttpDelete]
+        public ResponseResult<Cookie> deleteDntType([FromQuery] int Id)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.DeleteDntTyp(Id);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("deleteDnt")]
+        [HttpDelete]
+        public ResponseResult<Cookie> deleteDnt([FromQuery] int Id)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.DeleteDnt(Id);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+        }
+
+        [Route("deleteUser")]
+        [HttpDelete]
+        public ResponseResult<Cookie> deleteUser([FromQuery] int Id)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                UserService userService = new UserService();
+                userService.DeleteUser(Id);
+                result.IsSuccess = true;
             }
             catch (Exception e)
             {

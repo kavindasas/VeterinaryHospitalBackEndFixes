@@ -7,9 +7,8 @@ namespace BackEnd.Models.Dto
 {
     public class UpdateDoctor
     {
-        public int UserId { get; internal set; }
-        public object DogName { get; internal set; }
-        public object Vacination { get; internal set; }
-        public object HRecord { get; internal set; }
+        public int UserId { get; set; }
+        public string Experience { get; set; }
+        public string Qualification { get; set; }
     }
 }
