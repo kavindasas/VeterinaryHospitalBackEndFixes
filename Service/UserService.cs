@@ -180,6 +180,7 @@ namespace BackEnd.Service
                 cmd.Parameters.AddWithValue("@Url", dnt.Url);
                 cmd.Parameters.AddWithValue("@Title", dnt.Title);
                 cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                cmd.Parameters.AddWithValue("@Type", dnt.Type);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -228,6 +229,7 @@ namespace BackEnd.Service
                 cmd.Parameters.AddWithValue("@Url", dnt.Url);
                 cmd.Parameters.AddWithValue("@Title", dnt.Title);
                 cmd.Parameters.AddWithValue("@Description", dnt.Description);
+                cmd.Parameters.AddWithValue("@Type", dnt.Type);
                 con.Open();
                 //cmd.ExecuteNonQuery();
                 SqlDataReader rdr = cmd.ExecuteReader();
