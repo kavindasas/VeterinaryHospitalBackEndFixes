@@ -65,7 +65,7 @@ namespace BackEnd.Controllers
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
             try
             {
-                OwnerService ownerService = new OwnerService();
+                StaffService ownerService = new StaffService();
                 result.Result = ownerService.Login(owner);
                 if (result.Result.UserId == 0)
                 {
@@ -82,15 +82,15 @@ namespace BackEnd.Controllers
 
         // PUT api/values/5
         [HttpPut]
-        public ResponseResult<Cookie> Put([FromBody] UpdateDogInfo updateDogInfo)
+        public ResponseResult<Cookie> Put([FromBody] UpdateStaffInfo updateDogInfo)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
-            OwnerService ownerService = new OwnerService();
+            StaffService ownerService = new StaffService();
 
             try
             {
-                result.Result = null;
-                result.IsSuccess = ownerService.UpdateInfo(updateDogInfo);
+                result.Result = ownerService.UpdateInfo(updateDogInfo);
+                result.IsSuccess = true;
             }
             catch (Exception e)
             {
@@ -105,7 +105,7 @@ namespace BackEnd.Controllers
         public ResponseResult<Cookie> ChangePassword([FromBody] ChangePassword updateDogInfo)
         {
             ResponseResult<Cookie> result = new ResponseResult<Cookie>();
-            OwnerService ownerService = new OwnerService();
+            StaffService ownerService = new StaffService();
 
             try
             {

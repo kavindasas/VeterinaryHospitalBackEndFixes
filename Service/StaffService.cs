@@ -113,20 +113,19 @@ namespace BackEnd.Service
                 return cookie;
         }
 
-        public Cookie UpdateInfo(UpdateDogInfo updateStaffInfo)
+        public Cookie UpdateInfo(UpdateStaffInfo updateStaffInfo)
         {
             Cookie cookie = new Cookie();
 
                 using (SqlConnection con = new SqlConnection(connectionString))
 
                 {
-                    SqlCommand cmd = new SqlCommand("Update_DogInfo", con);
+                    SqlCommand cmd = new SqlCommand("Update_StaffInfo", con);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@UserId", updateStaffInfo.UserId);
-                    cmd.Parameters.AddWithValue("@DogName", updateStaffInfo.DogName);
-                    cmd.Parameters.AddWithValue("@Vacination", updateStaffInfo.Vacination);
-                    cmd.Parameters.AddWithValue("@HRecord", updateStaffInfo.HRecord);
+                    cmd.Parameters.AddWithValue("@Experience", updateStaffInfo.Experience);
+                    cmd.Parameters.AddWithValue("@Qualification", updateStaffInfo.Qualification);
                     con.Open();
                     //cmd.ExecuteNonQuery();
                     SqlDataReader rdr = cmd.ExecuteReader();
