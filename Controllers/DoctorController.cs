@@ -69,6 +69,7 @@ namespace BackEnd.Controllers
                 result.Result = doctorService.Login(doctor);
                 if (result.Result.UserId == 0)
                 {
+                    result.IsSuccess = false;
                     result.Message = "Incorrect RegNo Or Password";
                 }
             }

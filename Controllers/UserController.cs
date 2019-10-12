@@ -97,7 +97,11 @@ namespace BackEnd.Controllers
             {
                 UserService userService = new UserService();
                 result.Result = userService.Login(user);
-
+                if (result.Result.UserId == 0)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "Incorrect RegNo Or Password";
+                }
             }
             catch (Exception e)
             {
