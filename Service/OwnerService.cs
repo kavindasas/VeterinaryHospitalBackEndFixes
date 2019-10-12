@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BackEnd.Service
@@ -33,7 +35,10 @@ namespace BackEnd.Service
                     cmd.Parameters.AddWithValue("@DogType", owner.DogType);
                     cmd.Parameters.AddWithValue("@DogAge", owner.DogAge);
                     cmd.Parameters.AddWithValue("@DogDob", owner.DogDob);
-                    cmd.Parameters.AddWithValue("@PassWord", owner.PassWord);
+                    //cmd.Parameters.AddWithValue("@PassWord", owner.PassWord);
+                    var provider = new SHA1CryptoServiceProvider();
+                    var encoding = new UnicodeEncoding();
+                    cmd.Parameters.AddWithValue("@PassWord", provider.ComputeHash(encoding.GetBytes(owner.PassWord)));
                     con.Open();
                     //cmd.ExecuteNonQuery();
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -109,7 +114,10 @@ namespace BackEnd.Service
 
                     cmd.Parameters.AddWithValue("@UserType", 3);
                     cmd.Parameters.AddWithValue("@RegNo", login.RegNo.ToUpper());
-                    cmd.Parameters.AddWithValue("@PassWord", login.PassWord);
+                    //cmd.Parameters.AddWithValue("@PassWord", login.PassWord);
+                    var provider = new SHA1CryptoServiceProvider();
+                    var encoding = new UnicodeEncoding();
+                    cmd.Parameters.AddWithValue("@PassWord", provider.ComputeHash(encoding.GetBytes(login.PassWord)));
                     con.Open();
                     //cmd.ExecuteNonQuery();
                     SqlDataReader rdr = cmd.ExecuteReader();
@@ -204,8 +212,10 @@ namespace BackEnd.Service
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@UserId", password.Id);
-                cmd.Parameters.AddWithValue("@OldPass", password.OldPass);
-                cmd.Parameters.AddWithValue("@NewPass", password.NewPass);
+                var provider = new SHA1CryptoServiceProvider();
+                var encoding = new UnicodeEncoding();
+                cmd.Parameters.AddWithValue("@OldPass", provider.ComputeHash(encoding.GetBytes(password.OldPass)));
+                cmd.Parameters.AddWithValue("@NewPass", provider.ComputeHash(encoding.GetBytes(password.NewPass)));
                 con.Open();
                 //cmd.ExecuteNonQuery();
                 SqlDataReader rdr = cmd.ExecuteReader();
