@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
+using BackEnd.Models;
+using BackEnd.Models.Response;
+using BackEnd.Service;
 using Microsoft.AspNetCore.Mvc;
+using Cookie = BackEnd.Models.Cookie;
 
 namespace BackEnd.Controllers
 {
@@ -12,28 +18,107 @@ namespace BackEnd.Controllers
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ResponseResult<List<Vaccination>> Get()
         {
-            return new string[] { "value1", "value2" };
+            ResponseResult<List<Vaccination>> result = new ResponseResult<List<Vaccination>>();
+            try
+            {
+                VaccinationService vService = new VaccinationService();
+                result.Result = vService.GetVaccinations();
+
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ResponseResult<List<Vaccination>> Get(int id)
         {
-            return "value";
+            ResponseResult<List<Vaccination>> result = new ResponseResult<List<Vaccination>>();
+            try
+            {
+                VaccinationService vService = new VaccinationService();
+                result.Result = vService.GetVaccinationByOwnerId(id);
+
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
         }
 
         // POST api/values
         [HttpPost]
+        public ResponseResult<Cookie> Reg([FromBody] Vaccination owner)
+        {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                VaccinationService vService = new VaccinationService();
+                result.IsSuccess = vService.AddVaccinations(owner);
+
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
+
+        }
+
+        // POST api/values
+        [Route("sendemail")]
+        [HttpPost]
         public void Post([FromBody] string value)
         {
+            //SmtpClient client = new SmtpClient("mysmtpserver");
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.EnableSsl = true;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.Credentials = new NetworkCredential("email@gmail.com", "password");
+                // send the email
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("whoever@me.com");
+                mailMessage.To.Add("receiver@me.com");
+                mailMessage.Body = "body";
+                mailMessage.Subject = "subject";
+                smtp.Send(mailMessage);
+            }
+            // client.UseDefaultCredentials = false;
+            // client.Credentials = new NetworkCredential("username", "password");
+
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public ResponseResult<Models.Cookie> Put([FromBody] Vaccination vaccination)
         {
+            ResponseResult<Models.Cookie> result = new ResponseResult<Models.Cookie>();
+            VaccinationService vService = new VaccinationService();
+
+            try
+            {
+                result.Result = null;
+                result.IsSuccess = vService.UpdateVaccination(vaccination);
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
         }
 
         // DELETE api/values/5
