@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using BackEnd.Models;
+using BackEnd.Models.Dto;
 using BackEnd.Models.Response;
 using BackEnd.Service;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +78,7 @@ namespace BackEnd.Controllers
         // POST api/values
         [Route("sendemail")]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] ReminderEmail value)
         {
             //SmtpClient client = new SmtpClient("mysmtpserver");
             using (SmtpClient smtp = new SmtpClient())
@@ -91,7 +92,7 @@ namespace BackEnd.Controllers
                 // send the email
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("whoever@me.com");
-                mailMessage.To.Add("receiver@me.com");
+                mailMessage.To.Add(value.OwnerEmail);
                 mailMessage.Body = "body";
                 mailMessage.Subject = "subject";
                 smtp.Send(mailMessage);
