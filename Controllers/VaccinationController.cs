@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using BackEnd.Models;
 using BackEnd.Models.Dto;
@@ -15,7 +16,7 @@ namespace BackEnd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class vaccinationController : ControllerBase
+    public class VaccinationController : ControllerBase
     {
         // GET api/values
         [HttpGet]
@@ -78,27 +79,39 @@ namespace BackEnd.Controllers
         // POST api/values
         [Route("sendemail")]
         [HttpPost]
-        public void Post([FromBody] ReminderEmail value)
+        public ResponseResult<Cookie> Post([FromBody] ReminderEmail value)
         {
-            //SmtpClient client = new SmtpClient("mysmtpserver");
-            using (SmtpClient smtp = new SmtpClient())
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
             {
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.UseDefaultCredentials = false;
-                smtp.EnableSsl = true;
-                smtp.Host = "smtp.gmail.com";
-                smtp.Port = 587;
-                smtp.Credentials = new NetworkCredential("email@gmail.com", "password");
-                // send the email
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("whoever@me.com");
-                mailMessage.To.Add(value.OwnerEmail);
-                mailMessage.Body = "body";
-                mailMessage.Subject = "subject";
-                smtp.Send(mailMessage);
+                using (SmtpClient smtp = new SmtpClient())
+                {
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.EnableSsl = true;
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.Port = 587;
+                    smtp.Credentials = new NetworkCredential("cute.paw.vets@gmail.com", "Admin!23");
+                    DateTime date = new DateTime();
+                    // send the email
+                    MailMessage mailMessage = new MailMessage();
+                    mailMessage.From = new MailAddress("cute.paw.vets@gmail.com");
+                    mailMessage.To.Add(value.OwnerEmail); // value.OwnerEmail
+                    var body = "Hi " + value.Name + ", <br /> This is to remind you of your appointment with us on " + value.Date.ToString("yyyy/MM/dd HH:mm:ss");
+                    mailMessage.Subject = "***Reminder***";
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(body, new ContentType("text/html"));
+
+                    mailMessage.AlternateViews.Add(htmlView);
+                    smtp.Send(mailMessage);
+                }
+
             }
-            // client.UseDefaultCredentials = false;
-            // client.Credentials = new NetworkCredential("username", "password");
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
 
         }
 
@@ -124,8 +137,21 @@ namespace BackEnd.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ResponseResult<Cookie> delete(int id)
         {
+            ResponseResult<Cookie> result = new ResponseResult<Cookie>();
+            try
+            {
+                VaccinationService vService = new VaccinationService();
+                vService.DeleteVaccination(id);
+                result.IsSuccess = true;
+            }
+            catch (Exception e)
+            {
+                result.IsSuccess = false;
+                result.Message = e.Message;
+            }
+            return result;
         }
     }
 }

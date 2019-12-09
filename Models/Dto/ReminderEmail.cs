@@ -7,7 +7,8 @@ namespace BackEnd.Models.Dto
 {
     public class ReminderEmail
     {
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public string OwnerEmail { get; set; }
+        public string Name { get; set; }
     }
 }

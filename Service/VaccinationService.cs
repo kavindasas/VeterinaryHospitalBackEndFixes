@@ -22,7 +22,7 @@ namespace BackEnd.Service
             using (SqlConnection con = new SqlConnection(connectionString))
 
             {
-                SqlCommand cmd = new SqlCommand("Get_Messages", con);
+                SqlCommand cmd = new SqlCommand("Get_VaccineSchedules", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 //cmd.ExecuteNonQuery();
@@ -32,6 +32,8 @@ namespace BackEnd.Service
                     Vaccination vaccination = new Vaccination();
                     vaccination.Id = Convert.ToInt32(rdr["Id"]);
                     vaccination.Description = rdr["Description"].ToString();
+                    vaccination.OwnerName = rdr["OwnerName"].ToString();
+                    vaccination.Email = rdr["Email"].ToString();
                     vaccination.CreatedDate = Convert.ToDateTime(rdr["CreatedDate"]);
                     vaccination.IsEnded = Convert.ToBoolean(rdr["IsEnded"]);
                     vaccination.LastUpdatedDate = Convert.ToDateTime(rdr["LastUpdatedDate"]);
