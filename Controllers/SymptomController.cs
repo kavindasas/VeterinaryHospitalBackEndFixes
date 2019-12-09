@@ -40,7 +40,7 @@ namespace BackEnd.Controllers
             try
             {
                 SymtomsService symtomsService = new SymtomsService();
-                result.Result = symtomsService.GetDiseaseBySymptomIds(symptomReq.Ids);
+                result.Result = symtomsService.GetDiseaseBySymptomIds(symptomReq.Ids); // [{id: 1},{id:2}]
 
             }
             catch (Exception e)
